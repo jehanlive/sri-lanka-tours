@@ -1,0 +1,39 @@
+{
+  "counter": 2,
+  "bookings": [
+    {
+      "reference": "SLT-20260128-0001",
+      "stripeSessionId": "cs_test_a1jd42zDKBXgZ9U4ibXwW9jKK74tZtE56BpjzQR1583OCX0j3OxGX8uUYL",
+      "amount": 87360,
+      "currency": "usd",
+      "email": "jehanlive@gmail.com",
+      "metadata": {
+        "tier": "STAR4",
+        "adults": "2",
+        "days": "3",
+        "children": "0",
+        "infants": "0",
+        "startDate": "2026-02-04",
+        "itinerarySlug": "3-day-highlights"
+      },
+      "createdAt": "2026-01-28T12:59:09.774Z"
+    },
+    {
+      "reference": "SLT-20260128-0002",
+      "stripeSessionId": "cs_test_a1cGAiXnjfcgeDkiqCBXukPVhw4yW9LNCfXC2gM4v6E9rqOfjPofjHHouY",
+      "amount": 63840,
+      "currency": "usd",
+      "email": "jehanlive@gmail.com",
+      "metadata": {
+        "tier": "STAR3",
+        "adults": "2",
+        "days": "3",
+        "children": "0",
+        "infants": "0",
+        "itinerarySlug": "3-day-highlights",
+        "startDate": "2026-02-06"
+      },
+      "createdAt": "2026-01-28T13:03:18.263Z"
+    }
+  ]
+}
