@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Booking {
+  id              String   @id @default(cuid())
+  reference       String   @unique
+  stripeSessionId String   @unique
+  amount          Int
+  currency        String
+  email           String?
+
+  itinerarySlug   String
+  itineraryTitle  String?
+  startDate       String
+  tier            String
+  adults          Int
+  children        Int
+  infants         Int
+  days            Int
+
+  createdAt       DateTime @default(now())
+}
+
+model BookingCounter {
+  id        Int      @id @default(1)
+  dateKey   String
+  last      Int
+  updatedAt DateTime @updatedAt
+}

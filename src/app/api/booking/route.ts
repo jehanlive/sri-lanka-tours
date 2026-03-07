@@ -12,10 +12,15 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Missing session_id" }, { status: 400 });
   }
 
-  const raw = fs.readFileSync(dataFile, "utf-8");
-  const store = JSON.parse(raw);
+  let store: any;
+  try {
+    const raw = fs.readFileSync(dataFile, "utf-8").trim();
+    store = raw ? JSON.parse(raw) : { counter: 0, bookings: [] };
+  } catch {
+    store = { counter: 0, bookings: [] };
+  }
 
-  const booking = store.bookings.find(
+  const booking = (store.bookings ?? []).find(
     (b: any) => b.stripeSessionId === sessionId
   );
 

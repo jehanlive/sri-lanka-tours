@@ -1,5 +1,5 @@
 {
-  "counter": 2,
+  "counter": 5,
   "bookings": [
     {
       "reference": "SLT-20260128-0001",
@@ -34,6 +34,60 @@
         "startDate": "2026-02-06"
       },
       "createdAt": "2026-01-28T13:03:18.263Z"
+    },
+    {
+      "reference": "SLT-20260130-0003",
+      "stripeSessionId": "cs_test_a1KH4bEZaYaBKEkHPkjLayb6TG2RU7paok0L2OcRG4IGIpvQE7X2GIytpy",
+      "amount": 63840,
+      "currency": "usd",
+      "email": "jehanlive@gmail.com",
+      "metadata": {
+        "tier": "STAR3",
+        "adults": "2",
+        "itineraryTitle": "3-Day Sri Lanka Highlights",
+        "days": "3",
+        "children": "0",
+        "infants": "0",
+        "startDate": "2026-02-06",
+        "itinerarySlug": "3-day-highlights"
+      },
+      "createdAt": "2026-01-30T11:25:21.257Z"
+    },
+    {
+      "reference": "SLT-20260131-0004",
+      "stripeSessionId": "cs_test_a1YbU0xb9aVmYHIcpNZywiax50FsMtU6mTYGkDo44o7xh3t9suTdQdJOhz",
+      "amount": 63840,
+      "currency": "usd",
+      "email": "contact@orientaltravels.lk",
+      "metadata": {
+        "tier": "STAR3",
+        "adults": "2",
+        "itineraryTitle": "3-Day Sri Lanka Highlights",
+        "days": "3",
+        "children": "0",
+        "infants": "0",
+        "startDate": "2026-02-04",
+        "itinerarySlug": "3-day-highlights"
+      },
+      "createdAt": "2026-01-31T05:32:52.419Z"
+    },
+    {
+      "reference": "SLT-20260131-0005",
+      "stripeSessionId": "cs_test_a1iy4opUFfh09qVsMoefUfuDc0OSq0dqyAWLQ6Tw1qyJH6sR6YbEckHY42",
+      "amount": 595840,
+      "currency": "usd",
+      "email": "jehanlive@gmail.com",
+      "metadata": {
+        "tier": "STAR5",
+        "adults": "2",
+        "itineraryTitle": "14-Day Grand Sri Lanka Tour",
+        "days": "14",
+        "children": "0",
+        "infants": "0",
+        "itinerarySlug": "14-day-grand-tour",
+        "startDate": "2026-02-07"
+      },
+      "createdAt": "2026-01-31T06:07:29.624Z"
     }
   ]
 }

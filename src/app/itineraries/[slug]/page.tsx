@@ -1,6 +1,26 @@
+import Image from "next/image";
 import Link from "next/link";
 import BookingWidget from "@/components/BookingWidget";
+import ItineraryTabs from "@/components/ItineraryTabs";
 import { itineraries } from "@/lib/itineraries";
+import { getFromPricePerPersonUsdCents } from "@/lib/pricing";
+import FromPrice from "@/components/FromPrice";
+import { buildStayOptions } from "@/lib/stayOptions";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const itinerary = itineraries.find((i) => i.slug === slug);
+  if (!itinerary) return {};
+  return {
+    title: `${itinerary.title} | Oriental Travels`,
+    description: itinerary.summary,
+  };
+}
 
 export default async function ItineraryDetailPage({
   params,
@@ -14,8 +34,6 @@ export default async function ItineraryDetailPage({
   if (!itinerary) {
     return (
       <main className="max-w-3xl mx-auto px-6 py-16">
-        <p className="text-sm text-gray-500">Slug: {slug || "(empty)"}</p>
-
         <h1 className="text-2xl font-bold mb-4">Itinerary not found</h1>
         <Link className="underline" href="/itineraries">
           Back to itineraries
@@ -24,31 +42,64 @@ export default async function ItineraryDetailPage({
     );
   }
 
+  const fromPriceUsdCents = getFromPricePerPersonUsdCents(slug);
+  const stayOptions = buildStayOptions(itinerary.overnightCities);
+
   return (
-    <main className="max-w-3xl mx-auto px-6 py-16">
-      <p className="text-sm text-gray-500">Slug: {slug}</p>
+    <main className="max-w-6xl mx-auto px-6 py-10">
+      {/* Title */}
+      <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+        {itinerary.title}
+      </h1>
 
-      <Link className="underline text-sm" href="/itineraries">
-        ← Back to itineraries
-      </Link>
+      {/* Hero image */}
+      <div className="mt-6 relative w-full h-[48vh] min-h-[360px] rounded-2xl overflow-hidden border border-black/10">
+        <Image
+          src={itinerary.image}
+          alt={itinerary.title}
+          fill
+          priority
+          className="object-cover"
+        />
+      </div>
 
-      <h1 className="text-3xl font-bold mt-4">{itinerary.title}</h1>
-      <p className="text-gray-600 mt-2">{itinerary.days} days</p>
+      {/* Route highlight */}
+      <div className="mt-6 text-black/70">
+        <span className="font-semibold text-black">Route: </span>
+        {itinerary.route ?? itinerary.summary}
+      </div>
+      {fromPriceUsdCents && (
+        <div className="mt-2 text-black/70">
+          <span className="font-semibold text-black">Price: </span>
+          <FromPrice usdCents={fromPriceUsdCents} />
+        </div>
+      )}
 
-      <p className="text-gray-700 mt-6">{itinerary.summary}</p>
+      {/* Tabs */}
+      <div className="mt-10">
+        <ItineraryTabs
+          overview={itinerary.overview}
+          dayByDay={itinerary.dayByDay}
+          includes={itinerary.includes}
+          excludes={itinerary.excludes}
+          stayOptions={stayOptions}
+        />
+      </div>
 
-      <h2 className="text-xl font-semibold mt-10 mb-3">Highlights</h2>
-      <ul className="list-disc pl-6 space-y-2 text-gray-700">
-        {itinerary.highlights.map((h) => (
-          <li key={h}>{h}</li>
-        ))}
-      </ul>
+      {/* Booking block full width below tabs */}
+      <div className="mt-8">
+        <BookingWidget
+          slug={itinerary.slug}
+          title={itinerary.title}
+          days={itinerary.days}
+          fromPriceUsdCents={fromPriceUsdCents}
+        />
+      </div>
 
       <div className="mt-10">
-        <BookingWidget
-  slug={itinerary.slug}
-  title={itinerary.title}
-  days={itinerary.days}/>
+        <Link className="underline text-sm" href="/itineraries">
+          ← Back to itineraries
+        </Link>
       </div>
     </main>
   );

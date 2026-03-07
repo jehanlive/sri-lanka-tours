@@ -1,0 +1,18 @@
+version: "5.0.1"
+
+services:
+  db:
+    image: postgres:16
+    container_name: slt-postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: slt
+      POSTGRES_PASSWORD: slt_password
+      POSTGRES_DB: slt
+    volumes:
+      - slt_db:/var/lib/postgresql/data
+
+volumes:
+  slt_db:

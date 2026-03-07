@@ -1,26 +1,66 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #f5f1e6;
+  --foreground: #151515;
+  --surface: #fffdf8;
+  --surface-strong: #f3ead5;
+  --line: #151515;
+  --brand: #0d5bd7;
+  --brand-2: #c9a227;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), "Arial Narrow", Arial, sans-serif;
+  letter-spacing: 0.01em;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  letter-spacing: 0.01em;
+}
+
+::selection {
+  background: var(--brand-2);
+  color: #111;
+}
+
+.theme-card {
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+}
+
+.theme-outline {
+  border: 2px solid var(--line);
+}
+
+.theme-pill {
+  border: 2px solid var(--line);
+  border-radius: 9999px;
+  background: var(--surface-strong);
+}
+
+.theme-btn-primary {
+  background: var(--line);
+  color: #fff;
+  border: 2px solid var(--line);
+  border-radius: 9999px;
+  font-weight: 700;
+}
+
+.theme-btn-primary:hover {
+  background: #2a2a2a;
+}
+
+.theme-btn-accent {
+  background: var(--brand-2);
+  color: #111;
+  border: 2px solid #111;
+  border-radius: 9999px;
+  font-weight: 800;
 }
