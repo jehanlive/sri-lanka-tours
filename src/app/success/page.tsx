@@ -45,7 +45,10 @@ function SuccessPageInner() {
 
   return (
     <main className="max-w-3xl mx-auto px-6 py-16">
-      <h1 className="text-3xl font-bold">Payment successful ✅</h1>
+      <h1 className="text-3xl font-bold">Payment Successful</h1>
+      <p className="mt-3 text-gray-600">
+        We have received your payment and will reach out to you shortly with confirmation details.
+      </p>
 
       {booking ? (
         <div className="mt-6 border rounded-2xl p-6 bg-green-50">
@@ -83,9 +86,7 @@ function SuccessPageInner() {
             </div>
           </div>
         </div>
-      ) : (
-        <p className="mt-6 text-gray-600">Finalizing booking…</p>
-      )}
+      ) : null}
 
       <div className="mt-8 flex gap-4">
         <Link className="underline" href="/itineraries">

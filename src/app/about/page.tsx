@@ -9,7 +9,7 @@ export default function AboutPage() {
         <section className="mt-10 max-w-3xl">
           <h2 className="text-xl font-semibold">What we do best</h2>
           <p className="mt-4 text-black/70 leading-relaxed">
-            At OT, we believe great holidays start with great planning. With roots
+            At Ori Lanka Travels & Tours, we believe great holidays start with great planning. With roots
             in Sri Lanka and decades of experience behind us, we combine local
             knowledge, global connections and personal service to create holidays
             that feel effortless from start to finish.
@@ -27,7 +27,7 @@ export default function AboutPage() {
             as our expertise grew and our clients’ needs evolved, so did we.
           </p>
           <p className="mt-4 text-black/70 leading-relaxed">
-            Today, OT is a full-service travel company, offering carefully
+            Today, Ori Lanka Travels & Tours is a full-service travel company, offering carefully
             planned leisure holidays alongside our long-standing corporate travel
             services. While much has changed since we started, our commitment to
             service, reliability and attention to detail has remained the same.
@@ -114,7 +114,7 @@ export default function AboutPage() {
         <section className="max-w-3xl">
           <h2 className="text-xl font-semibold">Travel built on experience</h2>
           <p className="mt-4 text-black/70 leading-relaxed">
-            With over three decades of experience, OT Travel has grown through
+            With over three decades of experience, Ori Lanka Travels & Tours Travel has grown through
             long-standing relationships, repeat customers and word-of-mouth
             recommendations. We’re proud to be a company that values trust,
             transparency and service — and we look forward to helping you plan

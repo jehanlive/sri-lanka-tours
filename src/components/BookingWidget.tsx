@@ -51,6 +51,12 @@ function toIsoDate(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
 
+function addDaysToIso(isoDate: string, n: number): string {
+  const [y, m, d] = isoDate.split("-").map(Number);
+  const result = new Date(y, m - 1, d + n);
+  return `${result.getFullYear()}-${String(result.getMonth() + 1).padStart(2, "0")}-${String(result.getDate()).padStart(2, "0")}`;
+}
+
 function buildMonthGrid(monthStart: Date): Array<Date | null> {
   const firstWeekday = monthStart.getDay();
   const daysInMonth = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 0).getDate();
@@ -167,7 +173,7 @@ export default function BookingWidget({
             <div className="flex items-center justify-between mb-4">
               <button
                 type="button"
-                className="border rounded-full px-3 py-1 text-sm disabled:opacity-40"
+                className="border rounded-full px-3 py-1 text-sm disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed"
                 disabled={calendarMonth <= minMonth}
                 onClick={() => setCalendarMonth((prev) => addMonths(prev, -1))}
               >
@@ -178,7 +184,7 @@ export default function BookingWidget({
               </div>
               <button
                 type="button"
-                className="border rounded-full px-3 py-1 text-sm"
+                className="border rounded-full px-3 py-1 text-sm cursor-pointer disabled:cursor-not-allowed"
                 disabled={addMonths(calendarMonth, 1) >= maxMonth}
                 onClick={() => setCalendarMonth((prev) => addMonths(prev, 1))}
               >
@@ -192,6 +198,7 @@ export default function BookingWidget({
                   key={`${monthStart.getFullYear()}-${monthStart.getMonth()}`}
                   monthStart={monthStart}
                   selectedDate={startDate}
+                  days={days}
                   minStartDate={minStartDate}
                   maxStartDate={maxStartDate}
                   onSelect={setStartDate}
@@ -257,7 +264,7 @@ export default function BookingWidget({
           <h4 className="text-base font-semibold">Room Arrangement</h4>
           <button
             type="button"
-            className="theme-pill px-4 py-2 text-sm font-medium hover:bg-[var(--surface-strong)] disabled:opacity-50"
+            className="theme-pill px-4 py-2 text-sm font-medium hover:bg-[var(--surface-strong)] disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
             disabled={rooms.length >= 6}
             onClick={() => setRooms((prev) => [...prev, { adults: 1, childAges: [] }])}
           >
@@ -275,7 +282,7 @@ export default function BookingWidget({
                   {rooms.length > 1 && (
                     <button
                       type="button"
-                      className="text-sm underline"
+                      className="text-sm underline cursor-pointer"
                       onClick={() => setRooms((prev) => prev.filter((_, i) => i !== index))}
                     >
                       Remove
@@ -389,7 +396,7 @@ export default function BookingWidget({
             </div>
 
             <button
-              className="theme-btn-primary px-5 py-3 rounded-lg font-medium disabled:opacity-50"
+              className="theme-btn-primary px-5 py-3 rounded-lg font-medium disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
               disabled={!quoteTotalUsdCents || isQuoting}
               onClick={() => {
                 if (!quoteTotalUsdCents) return;
@@ -445,7 +452,7 @@ function Counter({
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>
       <div className="flex items-center gap-2">
-        <button type="button" className="border rounded-lg px-3 py-2 hover:bg-gray-100" onClick={() => onChange(clamp(value - 1, min, max))}>
+        <button type="button" className="border rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => onChange(clamp(value - 1, min, max))}>
           −
         </button>
         <input
@@ -458,7 +465,7 @@ function Counter({
           }}
           inputMode="numeric"
         />
-        <button type="button" className="border rounded-lg px-3 py-2 hover:bg-gray-100" onClick={() => onChange(clamp(value + 1, min, max))}>
+        <button type="button" className="border rounded-lg px-3 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => onChange(clamp(value + 1, min, max))}>
           +
         </button>
       </div>
@@ -476,12 +483,14 @@ function ordinal(n: number) {
 function MonthCalendar({
   monthStart,
   selectedDate,
+  days,
   minStartDate,
   maxStartDate,
   onSelect,
 }: {
   monthStart: Date;
   selectedDate: string;
+  days: number;
   minStartDate: string;
   maxStartDate: string;
   onSelect: (isoDate: string) => void;
@@ -489,6 +498,7 @@ function MonthCalendar({
   const cells = buildMonthGrid(monthStart);
   const monthLabel = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric" }).format(monthStart);
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const endDate = selectedDate ? addDaysToIso(selectedDate, days - 1) : "";
 
   return (
     <div className="rounded-xl border p-3">
@@ -505,7 +515,9 @@ function MonthCalendar({
           if (!date) return <div key={`empty-${idx}`} className="h-10" />;
           const iso = toIsoDate(date);
           const isDisabled = iso < minStartDate || iso > maxStartDate;
-          const isSelected = iso === selectedDate;
+          const isStart = iso === selectedDate;
+          const isEnd = selectedDate && iso === endDate;
+          const isInRange = selectedDate && iso > selectedDate && iso < endDate;
           return (
             <button
               key={iso}
@@ -513,8 +525,14 @@ function MonthCalendar({
               onClick={() => onSelect(iso)}
               disabled={isDisabled}
               className={[
-                "h-10 rounded text-sm",
-                isSelected ? "bg-[var(--brand)] text-white" : isDisabled ? "bg-gray-100 text-gray-400" : "bg-[var(--surface-strong)] hover:bg-[#ead7a1]",
+                "h-10 rounded text-sm cursor-pointer disabled:cursor-not-allowed",
+                isStart || isEnd
+                  ? "bg-[var(--brand)] text-white font-semibold"
+                  : isInRange
+                  ? "bg-[var(--brand)]/25 text-black"
+                  : isDisabled
+                  ? "bg-gray-100 text-gray-400"
+                  : "bg-[var(--surface-strong)] hover:bg-[#ead7a1]",
               ].join(" ")}
               aria-label={iso}
             >

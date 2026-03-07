@@ -93,8 +93,8 @@ export default function SalesBanner({ picks }: { picks: SaleItinerary[] }) {
             </Link>
           </div>
 
-          <div className="mt-8 grid md:grid-cols-3 gap-4">
-            {safePicks.slice(0, 3).map((it) => (
+          <div className="mt-8 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {safePicks.slice(0, 12).map((it) => (
               <Link
                 key={it.slug}
                 href={`/itineraries/${it.slug}`}
@@ -107,7 +107,7 @@ export default function SalesBanner({ picks }: { picks: SaleItinerary[] }) {
                       alt={it.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      sizes="(max-width: 768px) 100vw, 33vw"
+                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     />
                   </div>
                 )}

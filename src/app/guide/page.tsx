@@ -240,7 +240,7 @@ export default function GuidePage() {
           <div>
             <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">Sri Lanka Travel Guide</h1>
             <p className="mt-3 text-black/70 max-w-2xl">
-              Practical planning notes, seasons, food, transport, and key area snapshots — in a Wikipedia-style layout.
+              
             </p>
           </div>
 
@@ -300,8 +300,7 @@ export default function GuidePage() {
             </div>
 
             <div className="mt-12 text-sm text-black/60">
-              Want more sections (e.g., beaches, safaris, culture, itineraries by length)? Tell me which headings you want
-              and I’ll expand this in the same style.
+              
             </div>
           </article>
         </div>

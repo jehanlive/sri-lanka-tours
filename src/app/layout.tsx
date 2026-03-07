@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Suspense } from "react";
 import "./globals.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import LocaleCurrencyBar from "../components/LocaleCurrencyBar";
 import CurrencyProvider from "../components/CurrencyProvider";
 
 const geistSans = Geist({
@@ -35,11 +33,6 @@ export default function RootLayout({
         {/* ✅ GLOBAL HEADER */}
         <CurrencyProvider>
           <Header />
-
-          {/* Global locale/currency bar */}
-          <Suspense fallback={null}>
-            <LocaleCurrencyBar />
-          </Suspense>
 
           {/* Page content */}
           {children}

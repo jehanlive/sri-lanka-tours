@@ -35,10 +35,15 @@ export default function ReviewPageClient() {
   const totalUsdCents = Number(sp.get("totalUsdCents") ?? "0");
   const roomsRaw = sp.get("rooms");
   const rooms = useMemo(() => parseRooms(roomsRaw), [roomsRaw]);
-  const [customerName, setCustomerName] = useState(sp.get("customerName") ?? "");
+  const savedName = sp.get("customerName") ?? "";
+  const savedNameParts = savedName.split(" ");
+  const [firstName, setFirstName] = useState(savedNameParts.slice(0, -1).join(" ") || savedName);
+  const [lastName, setLastName] = useState(savedNameParts.length > 1 ? savedNameParts[savedNameParts.length - 1] : "");
+  const customerName = `${firstName.trim()} ${lastName.trim()}`.trim();
   const [customerEmail, setCustomerEmail] = useState(sp.get("customerEmail") ?? "");
   const [nationality, setNationality] = useState(sp.get("nationality") ?? "");
 
+  const [agreedToTerms, setAgreedToTerms] = useState(true);
   const [isPaying, setIsPaying] = useState(false);
   const [payError, setPayError] = useState("");
 
@@ -109,15 +114,24 @@ export default function ReviewPageClient() {
 
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <p className="text-sm text-gray-500 mb-1">Full name</p>
+            <p className="text-sm text-gray-500 mb-1">First name</p>
             <input
               className="w-full border rounded-lg px-3 py-2"
-              value={customerName}
-              onChange={(e) => setCustomerName(e.target.value)}
-              placeholder="Your full name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder="First name"
             />
           </div>
           <div>
+            <p className="text-sm text-gray-500 mb-1">Last name</p>
+            <input
+              className="w-full border rounded-lg px-3 py-2"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder="Last name"
+            />
+          </div>
+          <div className="md:col-span-2">
             <p className="text-sm text-gray-500 mb-1">Email</p>
             <input
               type="email"
@@ -144,7 +158,23 @@ export default function ReviewPageClient() {
           </div>
         </div>
 
-        <div className="mt-8 flex items-center justify-between border-t pt-6 gap-4">
+        <div className="mt-6 flex items-start gap-3">
+          <input
+            id="terms-agree"
+            type="checkbox"
+            checked={agreedToTerms}
+            onChange={(e) => setAgreedToTerms(e.target.checked)}
+            className="mt-0.5 h-4 w-4 cursor-pointer accent-black shrink-0"
+          />
+          <label htmlFor="terms-agree" className="text-sm text-gray-600 cursor-pointer">
+            I have read and agree to the{" "}
+            <Link href="/terms" className="underline text-black hover:text-gray-700" target="_blank">Terms &amp; Conditions</Link>
+            {" "}and{" "}
+            <Link href="/cancellation" className="underline text-black hover:text-gray-700" target="_blank">Cancellation Policy</Link>.
+          </label>
+        </div>
+
+        <div className="mt-6 flex items-center justify-between border-t pt-6 gap-4">
           <div>
             <p className="text-sm text-gray-500">Total</p>
             <p className="text-2xl font-bold">{displayTotal}</p>
@@ -161,9 +191,11 @@ export default function ReviewPageClient() {
               !slug ||
               !startDate ||
               rooms.length === 0 ||
-              !customerName.trim() ||
+              !firstName.trim() ||
+              !lastName.trim() ||
               !customerEmail.trim() ||
-              !nationality
+              !nationality ||
+              !agreedToTerms
             }
             onClick={async () => {
               setPayError("");

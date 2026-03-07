@@ -34,7 +34,7 @@ function SectionTitle({ title }: { title: string }) {
 function pick3Random<T>(arr: T[]) {
   const copy = [...arr];
   copy.sort(() => Math.random() - 0.5);
-  return copy.slice(0, 3);
+  return copy.slice(0, 12);
 }
 
 
@@ -52,8 +52,8 @@ export default function HomePage() {
 return (
   <div className="min-h-screen bg-white text-black">
     {/* Hero */}
-    <section className="relative">
-      <div className="relative h-[78vh] min-h-[620px] w-full">
+    <section>
+      <div className="relative h-[60vh] min-h-[480px] md:h-[78vh] md:min-h-[620px] w-full">
         <Image
           src="/hero3.jpg"
           alt="Sri Lanka landscape"
@@ -63,36 +63,33 @@ return (
         />
         <div className="absolute inset-0 bg-black/45" />
 
-        <div className="absolute inset-0">
-          <div className="max-w-6xl mx-auto h-full px-6 flex items-center justify-center text-center">
-            <div className="max-w-3xl">
-              <h1 className="text-white text-4xl md:text-6xl font-semibold leading-tight">
-                Trusted Sri Lankan
-                <br />
-                Travel Partner
-              </h1>
+        <div className="absolute inset-0 flex items-center justify-center text-center px-6 md:pb-28">
+          <div className="max-w-3xl">
+            <h1 className="text-white text-4xl md:text-6xl font-semibold leading-tight">
+              Trusted Sri Lankan
+              <br />
+              Travel Partner
+            </h1>
 
-              <p className="mt-5 text-white/85 text-base md:text-lg">
-                Travel with confidence.
-                <br />
-                Sustainable, Local and Trustworthy
-              </p>
+            <p className="mt-5 text-white/85 text-base md:text-lg">
+              Travel with confidence.
+              <br />
+              Sustainable, Local and Trustworthy
+            </p>
 
-              <div className="mt-8 flex justify-center">
-                <Link
-                  href="/itineraries"
-                  className="inline-flex items-center justify-center rounded-full bg-black text-white px-8 py-3 text-sm md:text-base font-semibold hover:bg-black/90"
-                >
-                  Book Now
-                </Link>
-              </div>
+            <div className="mt-8 flex justify-center">
+              <Link
+                href="/itineraries"
+                className="inline-flex items-center justify-center rounded-full bg-black text-white px-8 py-3 text-sm md:text-base font-semibold hover:bg-black/90"
+              >
+                Book Now
+              </Link>
             </div>
           </div>
         </div>
-        
 
-        {/* 3 tiles row */}
-        <div className="absolute bottom-0 left-0 right-0">
+        {/* 3 tiles — desktop only (overlaps bottom of hero) */}
+        <div className="hidden md:block absolute bottom-0 left-0 right-0">
           <div className="max-w-6xl mx-auto px-6 pb-10">
             <div className="grid md:grid-cols-3 gap-4">
               {[
@@ -110,6 +107,25 @@ return (
               ))}
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* 3 tiles — mobile only (below hero image) */}
+      <div className="md:hidden bg-neutral-900 px-6 py-6">
+        <div className="grid grid-cols-1 gap-3">
+          {[
+            ["Tailored Tour Packages", "Custom itineraries designed for your needs."],
+            ["Local Insights", "Expert local guidance for immersive experiences."],
+            ["Seamless Experience", "Smooth planning, bookings, and support."],
+          ].map(([title, desc]) => (
+            <div
+              key={title}
+              className="rounded-xl border border-white/15 p-5 text-center"
+            >
+              <div className="text-white font-semibold">{title}</div>
+              <div className="mt-1 text-white/70 text-sm">{desc}</div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -187,7 +203,7 @@ return (
           Simple 4-Step Booking Process
         </div>
         <div className="mt-2 text-lg font-semibold">
-          Plan → Deposit → Confirm → Travel
+          Pick → Pay → Confirm → Travel
         </div>
         <div className="mt-2 text-sm text-black/60">
           (Quick, Safe, and Secure Booking)
@@ -204,16 +220,16 @@ return (
         </div>
 
         <div className="rounded-xl border border-black/10 p-5 bg-white hover:bg-black/[0.03] transition">
-          <div className="text-lg font-semibold">2) Pay 10% refundable deposit</div>
+          <div className="text-lg font-semibold">2) Pay by card</div>
           <p className="mt-2 text-sm text-black/60">
-            Secure your booking with a deposit via card.
+            Pay by card to confirm your trip.
           </p>
         </div>
 
         <div className="rounded-xl border border-black/10 p-5 bg-white hover:bg-black/[0.03] transition">
-          <div className="text-lg font-semibold">3) Pay full amount</div>
+          <div className="text-lg font-semibold">3) Receive confirmation itinerary</div>
           <p className="mt-2 text-sm text-black/60">
-            1 month before travel date.
+            We'll send your full itinerary and travel details.
           </p>
         </div>
 
@@ -233,47 +249,55 @@ return (
         <SectionTitle title="WHY TRAVEL WITH US" />
         <div className="max-w-6xl mx-auto px-6 mt-8">
           <div className="rounded-2xl border border-black/10 bg-white p-6 md:p-8">
-           <ul className="grid md:grid-cols-2 gap-4 text-base">
-  <li className="flex gap-3">
-    <span className="mt-1">✓</span>
-    <span>Licensed by Sri Lanka Tourism Development Authority (SLTDA)</span>
-  </li>
-
-  <li className="flex gap-3">
-    <span className="mt-1">✓</span>
-    <span>IATA-accredited travel company</span>
-  </li>
-
-  <li className="flex gap-3">
-    <span className="mt-1">✓</span>
-    <span>Sri Lanka specialists</span>
-  </li>
-
-  <li className="flex gap-3">
-    <span className="mt-1">✓</span>
-    <span>Handpicked hotels</span>
-  </li>
-
-  <li className="flex gap-3">
-    <span className="mt-1">✓</span>
-    <span>Experienced local guides</span>
-  </li>
-
-  <li className="flex gap-3">
-    <span className="mt-1">✓</span>
-    <span>24/7 local support</span>
-  </li>
-
-  <li className="flex gap-3">
-    <span className="mt-1">✓</span>
-    <span>Established in 1989</span>
-  </li>
-
-  <li className="flex gap-3">
-    <span className="mt-1">✓</span>
-    <span>Sustainable operation</span>
-  </li>
-</ul>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                {
+                  title: "Local Expertise",
+                  description:
+                    "Our local team is on the ground in Sri Lanka, offering expert guidance and advice.",
+                },
+                {
+                  title: "24/7 Support",
+                  description:
+                    "Our team is ready to offer round-the-clock support to ensure every journey runs smoothly.",
+                },
+                {
+                  title: "Sustainable",
+                  description:
+                    "We are committed to responsible tourism, supporting local communities and protecting Sri Lanka’s natural beauty for future generations",
+                },
+                {
+                  title: "Trustworthy",
+                  description:
+                    "Travel agents around the world trust us for our transparency, reliability, and unwavering commitment to excellence",
+                },
+                {
+                  title: "Quality Focused",
+                  description:
+                    "From accommodation to experiences, we hand-pick only the finest options to deliver consistently high-quality holidays.",
+                },
+                {
+                  title: "Best Prices",
+                  description:
+                    "Through strong local partnerships and smart planning, we guarantee the best value without compromising on service or experience.",
+                },
+                {
+                  title: "Accredited",
+                  description:
+                    "Licensed by Sri Lanka Tourism Development Authority (SLTDA) and International Air Transport Association (IATA).",
+                },
+                {
+                  title: "Established in 1989",
+                  description:
+                    "Serving our customers for over 36 years with consistency and creating seamless experiences that last a lifetime.",
+                },
+              ].map((item) => (
+                <article key={item.title} className="rounded-xl border border-black/10 bg-[#eef6fb] p-5">
+                  <h3 className="text-lg font-semibold">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-black/70">{item.description}</p>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </section>
