@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 
 type Booking = {
   reference: string;
@@ -20,7 +20,7 @@ function formatUsd(cents: number) {
   );
 }
 
-export default function SuccessPage() {
+function SuccessPageInner() {
   const sp = useSearchParams();
   const sessionId = sp.get("session_id");
 
@@ -96,5 +96,13 @@ export default function SuccessPage() {
         </Link>
       </div>
     </main>
+  );
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense fallback={<div className="max-w-3xl mx-auto px-6 py-16">Loading…</div>}>
+      <SuccessPageInner />
+    </Suspense>
   );
 }

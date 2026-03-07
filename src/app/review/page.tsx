@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useState, Suspense } from "react";
 import { endpointLabels, hotelLevelLabels, mealPlanLabels, type RoomSelection } from "@/lib/pricing";
 import { UN_MEMBER_STATES } from "@/lib/unMemberStates";
 import { formatPrice, useCurrency } from "@/lib/currency";
@@ -21,7 +21,7 @@ function parseRooms(value: string | null): RoomSelection[] {
   }
 }
 
-export default function ReviewPage() {
+function ReviewPageInner() {
   const sp = useSearchParams();
 
   const title = sp.get("title") ?? "";
@@ -212,5 +212,13 @@ export default function ReviewPage() {
         </Link>
       </div>
     </main>
+  );
+}
+
+export default function ReviewPage() {
+  return (
+    <Suspense fallback={<div className="max-w-3xl mx-auto px-6 py-16">Loading…</div>}>
+      <ReviewPageInner />
+    </Suspense>
   );
 }

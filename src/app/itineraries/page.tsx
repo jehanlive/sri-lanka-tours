@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { itineraries, type BudgetBand } from "@/lib/itineraries";
 import { getFromPricePerPersonUsdCents } from "@/lib/pricing";
@@ -123,7 +123,7 @@ function DualRange({
   );
 }
 
-export default function ItinerariesPage() {
+function ItinerariesPageInner() {
   const currency = useCurrency();
   const searchParams = useSearchParams();
 
@@ -354,5 +354,13 @@ export default function ItinerariesPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+export default function ItinerariesPage() {
+  return (
+    <Suspense fallback={<div className="max-w-7xl mx-auto px-6 py-10">Loading…</div>}>
+      <ItinerariesPageInner />
+    </Suspense>
   );
 }
