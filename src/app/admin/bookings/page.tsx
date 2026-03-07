@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Booking } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import AdminLogout from "./AdminLogout";
 
@@ -53,7 +54,7 @@ export default async function AdminBookingsPage() {
           </thead>
 
           <tbody>
-            {bookings.map((b) => (
+            {bookings.map((b: Booking) => (
               <tr key={b.stripeSessionId} className="border-t align-top">
                 <td className="p-3 font-mono">{b.reference}</td>
 

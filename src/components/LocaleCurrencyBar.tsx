@@ -30,11 +30,10 @@ export default function LocaleCurrencyBar() {
     const w = window as Window & {
       google?: {
         translate?: {
-          TranslateElement?: new (
+          TranslateElement?: (new (
             options: Record<string, unknown>,
             elementId: string
-          ) => unknown;
-          TranslateElement?: { InlineLayout?: { SIMPLE: number } };
+          ) => unknown) & { InlineLayout?: { SIMPLE: number } };
         };
       };
       __orilankaGoogleTranslateInit?: () => void;
