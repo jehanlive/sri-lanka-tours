@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
   const checkoutErrors: string[] = [];
   if (!customerName) checkoutErrors.push("Full name is required.");
-  if (!customerEmail || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(customerEmail)) {
+  if (!customerEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) {
     checkoutErrors.push("Valid email is required.");
   }
   if (!nationality || !isUnMemberState(nationality)) {
