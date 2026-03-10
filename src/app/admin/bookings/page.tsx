@@ -1,7 +1,22 @@
 import Link from "next/link";
-import type { Booking } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import AdminLogout from "./AdminLogout";
+
+function formatRooms(roomsJson: string | null): string {
+  if (!roomsJson) return "—";
+  try {
+    const rooms: Array<{ adults: number; childAges: number[] }> = JSON.parse(roomsJson);
+    return rooms
+      .map((r, i) => {
+        const children = r.childAges.length;
+        const childPart = children > 0 ? ` + ${children}C (${r.childAges.join(",")})` : "";
+        return `R${i + 1}: ${r.adults}A${childPart}`;
+      })
+      .join(" | ");
+  } catch {
+    return roomsJson;
+  }
+}
 
 function formatMoney(cents: number, currency: string) {
   const cur = (currency || "usd").toUpperCase();
@@ -46,7 +61,10 @@ export default async function AdminBookingsPage() {
               <th className="p-3">Start</th>
               <th className="p-3">Tier</th>
               <th className="p-3">Travellers</th>
+              <th className="p-3">Rooms</th>
               <th className="p-3">Total</th>
+              <th className="p-3">Name</th>
+              <th className="p-3">Nationality</th>
               <th className="p-3">Email</th>
               <th className="p-3">Created</th>
               <th className="p-3">Stripe Session</th>
@@ -54,7 +72,7 @@ export default async function AdminBookingsPage() {
           </thead>
 
           <tbody>
-            {bookings.map((b: Booking) => (
+            {bookings.map((b) => (
               <tr key={b.stripeSessionId} className="border-t align-top">
                 <td className="p-3 font-mono">{b.reference}</td>
 
@@ -72,7 +90,10 @@ export default async function AdminBookingsPage() {
                   A:{b.adults} • C:{b.children} • I:{b.infants}
                 </td>
 
+                <td className="p-3 text-xs text-gray-600">{formatRooms(b.rooms ?? null)}</td>
                 <td className="p-3">{formatMoney(b.amount, b.currency)}</td>
+                <td className="p-3">{b.customerName ?? "—"}</td>
+                <td className="p-3">{b.nationality ?? "—"}</td>
                 <td className="p-3">{b.email ?? "—"}</td>
 
                 <td className="p-3">

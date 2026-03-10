@@ -184,7 +184,7 @@ export default function ReviewPageClient() {
           </div>
 
           <button
-            className="bg-black text-white px-5 py-3 rounded-lg font-medium hover:bg-gray-800 disabled:opacity-50"
+            className="bg-black text-white px-5 py-3 rounded-lg font-medium hover:bg-gray-800 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
             disabled={
               isPaying ||
               totalUsdCents <= 0 ||

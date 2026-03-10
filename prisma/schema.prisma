@@ -17,6 +17,9 @@ model Booking {
   amount          Int
   currency        String
   email           String?
+  customerName    String?
+  nationality     String?
+  rooms           String?
 
   itinerarySlug   String
   itineraryTitle  String?

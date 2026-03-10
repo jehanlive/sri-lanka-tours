@@ -51,6 +51,9 @@ export async function POST(req: Request) {
         amount: session.amount_total ?? 0,
         currency: session.currency ?? "usd",
         email: session.customer_details?.email ?? undefined,
+        customerName: md.customerName ?? undefined,
+        nationality: md.nationality ?? undefined,
+        rooms: md.rooms ?? undefined,
 
         itinerarySlug: md.itinerarySlug ?? "unknown",
         itineraryTitle: md.itineraryTitle ?? undefined,
@@ -65,7 +68,28 @@ export async function POST(req: Request) {
 
     const email = session.customer_details?.email;
     const tourName = md.itineraryTitle ?? md.itinerarySlug ?? "your tour";
-    const bookingDetails = `Booking reference: ${booking.reference}\nTour: ${tourName}\nStart date: ${md.startDate ?? "—"}\nTravellers: Adults ${md.adults ?? "0"}, Children ${md.children ?? "0"}, Infants ${md.infants ?? "0"}`;
+
+    // Parse rooms JSON for a readable breakdown
+    let roomsText = "—";
+    try {
+      const roomsArr: Array<{ adults: number; childAges: number[] }> = JSON.parse(md.rooms ?? "[]");
+      if (roomsArr.length > 0) {
+        roomsText = roomsArr
+          .map((r, i) => {
+            const children = r.childAges.length;
+            const childDetail = children > 0 ? ` + ${children} child${children > 1 ? "ren" : ""} (ages: ${r.childAges.join(", ")})` : "";
+            return `  Room ${i + 1}: ${r.adults} adult${r.adults !== 1 ? "s" : ""}${childDetail}`;
+          })
+          .join("\n");
+      }
+    } catch { /* ignore parse errors */ }
+
+    const amountFormatted = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format((session.amount_total ?? 0) / 100);
+
+    const bookingDetails = `Booking reference: ${booking.reference}
+Tour: ${tourName}
+Start date: ${md.startDate ?? "—"}
+Travellers: Adults ${md.adults ?? "0"}, Children ${md.children ?? "0"}, Infants ${md.infants ?? "0"}`;
 
     const customerEmailText = `Thank you for choosing us for your Sri Lanka tour.
 
@@ -88,10 +112,36 @@ ${bookingDetails}`;
 
     const adminEmail = process.env.ADMIN_EMAIL;
     if (adminEmail) {
+      const adminDetails = `BOOKING REFERENCE: ${booking.reference}
+Stripe Session: ${sessionId}
+
+--- CUSTOMER ---
+Name:        ${md.customerName ?? "—"}
+Email:       ${email ?? "—"}
+Nationality: ${md.nationality ?? "—"}
+
+--- TOUR ---
+Itinerary:   ${tourName} (${md.itinerarySlug ?? "—"})
+Start date:  ${md.startDate ?? "—"}
+Duration:    ${md.days ?? "—"} days
+Hotel level: ${md.tier ?? "—"}
+Start from:  ${md.startFrom ?? "—"}
+End at:      ${md.endLocation ?? "—"}
+Meal plan:   ${md.mealPlan ?? "—"}
+
+--- ROOM ARRANGEMENTS ---
+${roomsText}
+
+--- TOTALS ---
+Adults:   ${md.adults ?? "0"}
+Children: ${md.children ?? "0"}
+Infants:  ${md.infants ?? "0"}
+Amount paid: ${amountFormatted}`;
+
       await sendBookingEmail({
         to: adminEmail,
         subject: `New booking: ${tourName} (${booking.reference})`,
-        text: `New booking received from ${email ?? "unknown customer"}.\n\n---\n${bookingDetails}\n\n---\nCopy of customer email:\n\n${customerEmailText}`,
+        text: `New booking received.\n\n${adminDetails}`,
       });
     }
 
