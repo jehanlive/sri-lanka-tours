@@ -17,7 +17,9 @@ export async function generateMetadata({
   const itinerary = itineraries.find((i) => i.slug === slug);
   if (!itinerary) return {};
   return {
-    title: `${itinerary.title} | Oriental Travels`,
+    title: {
+      absolute: itinerary.title,
+    },
     description: itinerary.summary,
   };
 }

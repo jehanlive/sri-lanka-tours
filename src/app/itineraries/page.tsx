@@ -303,18 +303,20 @@ function ItinerariesPageInner() {
             filtered.map((it) => (
               <div key={it.slug} className="rounded-2xl theme-outline overflow-hidden bg-[var(--surface)] shadow-sm">
                 <div className="grid grid-cols-1 lg:grid-cols-[420px_1fr_220px]">
-                  <div className="relative h-64 lg:h-full bg-black/5">
+                  <Link href={`/itineraries/${it.slug}`} className="relative h-64 lg:h-full bg-black/5 block overflow-hidden group">
                     <Image
                       src={it.image}
                       alt={it.title}
                       fill
-                      className="object-cover"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
                       sizes="(max-width: 1024px) 100vw, 420px"
                     />
-                  </div>
+                  </Link>
 
                   <div className="p-6">
-                    <h2 className="text-2xl font-semibold leading-snug">{it.title}</h2>
+                    <Link href={`/itineraries/${it.slug}`} className="hover:underline">
+                      <h2 className="text-2xl font-semibold leading-snug">{it.title}</h2>
+                    </Link>
 
                     <div className="mt-3 flex flex-wrap gap-2">
                       <span className="text-xs theme-pill px-3 py-1">{it.days} days</span>
@@ -326,7 +328,7 @@ function ItinerariesPageInner() {
                       ))}
                     </div>
 
-                    <p className="mt-4 text-sm text-black/60">{it.summary}</p>
+                    <p className="mt-4 text-sm text-black/60 cursor-default">{it.summary}</p>
 
                     <div className="mt-5 flex flex-wrap gap-2">
                       {Array.from(new Set(it.overnightCities ?? [])).map((city) => (

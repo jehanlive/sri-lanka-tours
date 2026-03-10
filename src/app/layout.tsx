@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import CurrencyProvider from "../components/CurrencyProvider";
+import WhatsAppFloat from "../components/WhatsAppFloat";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,8 +17,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Oriental Travels | Sri Lanka",
+  title: {
+    default: "Ori Lanka Travels",
+    template: "%s - Ori Lanka Travels",
+  },
   description: "Tailor-made Sri Lanka holidays",
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
@@ -37,6 +46,7 @@ export default function RootLayout({
           {/* Page content */}
           {children}
 
+          <WhatsAppFloat />
           <Footer />
         </CurrencyProvider>
       </body>

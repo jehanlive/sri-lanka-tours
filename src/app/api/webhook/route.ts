@@ -22,9 +22,8 @@ export async function POST(req: Request) {
       sig,
       process.env.STRIPE_WEBHOOK_SECRET!
     );
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "Unknown webhook error";
-    console.error("Webhook signature verification failed:", message);
+  } catch (err: any) {
+    console.error("Webhook signature verification failed:", err.message);
     return NextResponse.json({ error: "Webhook Error" }, { status: 400 });
   }
 
@@ -65,20 +64,34 @@ export async function POST(req: Request) {
     });
 
     const email = session.customer_details?.email;
-    const customerName = md.customerName ?? session.customer_details?.name ?? "—";
-    const nationality = md.nationality ?? "—";
+    const tourName = md.itineraryTitle ?? md.itinerarySlug ?? "your tour";
+    const bookingDetails = `Booking reference: ${booking.reference}\nTour: ${tourName}\nStart date: ${md.startDate ?? "—"}\nTravellers: Adults ${md.adults ?? "0"}, Children ${md.children ?? "0"}, Infants ${md.infants ?? "0"}`;
+
+    const customerEmailText = `Thank you for choosing us for your Sri Lanka tour.
+
+We are currently working with our hotel partners to finalise your room availability. You will receive your booking confirmation email within 24 hours.
+
+If, for any reason, we are unable to confirm your reservation, our team will contact you within 48 hours to assist you with the available options.
+
+We appreciate your patience and look forward to making your Sri Lanka experience unforgettable.
+
+---
+${bookingDetails}`;
 
     if (email) {
       await sendBookingEmail({
         to: email,
-        subject: `Sri Lanka Tours booking confirmed (${booking.reference})`,
-        text: `Thanks! Your booking is confirmed.\n\nReference: ${booking.reference}\nItinerary: ${
-          md.itineraryTitle ?? md.itinerarySlug ?? "—"
-        }\nName: ${customerName}\nNationality: ${nationality}\nStart date: ${md.startDate ?? "—"}\nTier: ${
-          md.tier ?? "—"
-        }\nTravellers: Adults ${md.adults ?? "0"}, Children ${
-          md.children ?? "0"
-        }, Infants ${md.infants ?? "0"}\n\nWe’ll be in touch shortly.`,
+        subject: `Your Sri Lanka tour booking – ${tourName} (${booking.reference})`,
+        text: customerEmailText,
+      });
+    }
+
+    const adminEmail = process.env.ADMIN_EMAIL;
+    if (adminEmail) {
+      await sendBookingEmail({
+        to: adminEmail,
+        subject: `New booking: ${tourName} (${booking.reference})`,
+        text: `New booking received from ${email ?? "unknown customer"}.\n\n---\n${bookingDetails}\n\n---\nCopy of customer email:\n\n${customerEmailText}`,
       });
     }
 

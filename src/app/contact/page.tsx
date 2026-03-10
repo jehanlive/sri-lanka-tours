@@ -1,6 +1,11 @@
 import Link from "next/link";
 import ContactForm from "@/components/ContactForm";
 import Header from "@/components/Header";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact",
+};
 
 export default function ContactPage() {
   return (

@@ -1,3 +1,9 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us",
+};
+
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white text-black">
