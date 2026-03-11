@@ -18,16 +18,16 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-[var(--surface)] border-b-2 border-black">
-      <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between gap-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3 sm:gap-6 min-w-0">
         {/* Logo */}
-        <Link href="/" className="shrink-0" onClick={() => setMobileOpen(false)}>
+        <Link href="/" className="shrink min-w-0" onClick={() => setMobileOpen(false)}>
           <Image
             src="/UpdateOriLankaLogo.png"
             alt="Oriental Travels"
             width={350}
             height={120}
             priority
-            className="h-auto w-65"
+            className="h-auto w-[170px] sm:w-[220px] md:w-[260px] lg:w-[350px] max-w-full"
           />
         </Link>
 
@@ -56,13 +56,13 @@ export default function Header() {
         </div>
 
         {/* Mobile: currency toggle + hamburger */}
-        <div className="flex lg:hidden items-center gap-3">
+        <div className="flex lg:hidden items-center gap-2 shrink-0">
           <CurrencyToggle />
           <button
             type="button"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             onClick={() => setMobileOpen((v) => !v)}
-            className="flex flex-col justify-center gap-1.5 p-2"
+            className="flex flex-col justify-center gap-1.5 p-2 shrink-0"
           >
             <span
               className={`block h-0.5 w-6 bg-black transition-transform duration-200 ${

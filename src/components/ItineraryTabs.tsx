@@ -26,31 +26,33 @@ export default function ItineraryTabs(props: {
   return (
     <div className="rounded-2xl theme-outline bg-[var(--surface)]">
       {/* Tab bar */}
-      <div className="flex items-center gap-6 px-6 pt-5 border-b-2 border-black/20">
-        {tabs.map((t) => (
-          <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
-            className={[
-              "pb-4 text-base",
-              tab === t.key
-                ? "font-semibold border-b-2 border-black"
-                : "text-black/60 hover:text-black",
-            ].join(" ")}
-            type="button"
-          >
-            {t.label}
-          </button>
-        ))}
+      <div className="px-4 md:px-6 pt-5 border-b-2 border-black/20">
+        <div className="grid grid-cols-2 md:flex md:flex-wrap items-stretch md:items-center gap-x-4 gap-y-3">
+          {tabs.map((t) => (
+            <button
+              key={t.key}
+              onClick={() => setTab(t.key)}
+              className={[
+                "pb-3 md:pb-4 text-left text-sm md:text-base min-w-0 break-words",
+                tab === t.key
+                  ? "font-semibold border-b-2 border-black text-black"
+                  : "text-black/60 hover:text-black",
+              ].join(" ")}
+              type="button"
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
 
         {tab === "itinerary" && (
-          <div className="ml-auto flex items-center gap-3 pb-4">
+          <div className="flex items-center justify-between md:justify-end gap-3 pt-4 pb-4 min-w-0">
             <span className="text-sm text-black/60">Expand all</span>
             <button
               type="button"
               onClick={() => setOpenAll((v) => !v)}
               className={[
-                "w-14 h-7 rounded-full border transition relative",
+                "w-14 h-7 rounded-full border transition relative shrink-0",
                 openAll ? "bg-black border-black" : "bg-white border-black/20",
               ].join(" ")}
               aria-label="Toggle expand all"
