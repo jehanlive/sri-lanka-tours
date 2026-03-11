@@ -29,8 +29,13 @@ export async function POST(req: Request) {
       );
     }
 
+    const adminEmail =
+      process.env.ADMIN_EMAIL ||
+      process.env.CONTACT_TO_EMAIL ||
+      "contact@orientaltravels.lk";
+
     await sendBookingEmail({
-      to: "contact@orientaltravels.lk",
+      to: adminEmail,
       subject: `New contact enquiry from ${name}`,
       text: `
 Name: ${name}
