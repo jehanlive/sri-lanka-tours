@@ -23,9 +23,9 @@ export const metadata: Metadata = {
   },
   description: "Tailor-made Sri Lanka holidays",
   icons: {
-    icon: "/favicon.png",
-    shortcut: "/favicon.png",
-    apple: "/favicon.png",
+    icon: "/OTlogo4.png",
+    shortcut: "/OTlogo4.png",
+    apple: "/OTlogo4.png",
   },
 };
 

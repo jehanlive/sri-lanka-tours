@@ -1,8 +1,5 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
-
-const dataFile = path.join(process.cwd(), "src/data/bookings.json");
+import { prisma } from "@/lib/prisma";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -12,21 +9,35 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Missing session_id" }, { status: 400 });
   }
 
-  let store: any;
-  try {
-    const raw = fs.readFileSync(dataFile, "utf-8").trim();
-    store = raw ? JSON.parse(raw) : { counter: 0, bookings: [] };
-  } catch {
-    store = { counter: 0, bookings: [] };
-  }
-
-  const booking = (store.bookings ?? []).find(
-    (b: any) => b.stripeSessionId === sessionId
-  );
+  const booking = await prisma.booking.findUnique({
+    where: { stripeSessionId: sessionId },
+  });
 
   if (!booking) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  return NextResponse.json({ booking });
+  // Reconstruct metadata shape the success page expects
+  const metadata: Record<string, string> = {
+    itinerarySlug: booking.itinerarySlug,
+    itineraryTitle: booking.itineraryTitle ?? "",
+    startDate: booking.startDate,
+    tier: booking.tier,
+    adults: String(booking.adults),
+    children: String(booking.children),
+    infants: String(booking.infants),
+    days: String(booking.days),
+  };
+
+  return NextResponse.json({
+    booking: {
+      reference: booking.reference,
+      stripeSessionId: booking.stripeSessionId,
+      amount: booking.amount,
+      currency: booking.currency,
+      email: booking.email,
+      metadata,
+      createdAt: booking.createdAt,
+    },
+  });
 }

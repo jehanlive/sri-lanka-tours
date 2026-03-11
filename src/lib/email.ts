@@ -11,19 +11,34 @@ export async function sendBookingEmail(input: {
   const pass = process.env.SMTP_PASS;
   const from = process.env.EMAIL_FROM;
 
-  // MVP: if not configured, just skip.
-  if (!host || !port || !user || !pass || !from) return;
+  if (!host || !port || !user || !pass || !from) {
+    console.warn("⚠️ Email not sent – missing SMTP env vars:", {
+      SMTP_HOST: !!host,
+      SMTP_PORT: !!port,
+      SMTP_USER: !!user,
+      SMTP_PASS: !!pass,
+      EMAIL_FROM: !!from,
+    });
+    return;
+  }
 
   const transporter = nodemailer.createTransport({
     host,
     port,
+    secure: port === 465,
     auth: { user, pass },
   });
 
-  await transporter.sendMail({
-    from,
-    to: input.to,
-    subject: input.subject,
-    text: input.text,
-  });
+  try {
+    const info = await transporter.sendMail({
+      from,
+      to: input.to,
+      subject: input.subject,
+      text: input.text,
+    });
+    console.log("✅ Email sent to", input.to, "–", info.messageId);
+  } catch (err) {
+    console.error("❌ Email send failed:", err);
+    throw err;
+  }
 }
