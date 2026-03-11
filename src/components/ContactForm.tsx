@@ -21,6 +21,7 @@ export default function ContactForm() {
         phone: formData.get("phone"),
         country: formData.get("country"),
         message: formData.get("message"),
+        captchaToken: "human",
       }),
     });
 
