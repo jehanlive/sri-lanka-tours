@@ -22,7 +22,7 @@ export default function Header() {
         {/* Logo */}
         <Link href="/" className="shrink min-w-0" onClick={() => setMobileOpen(false)}>
           <Image
-            src="/UpdateOriLankaLogo.png"
+            src="/website logo hatmedal.png"
             alt="Oriental Travels"
             width={350}
             height={120}
