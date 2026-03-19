@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import CurrencyProvider from "../components/CurrencyProvider";
 import WhatsAppFloat from "../components/WhatsAppFloat";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,6 +50,7 @@ export default function RootLayout({
           <WhatsAppFloat />
           <Footer />
         </CurrencyProvider>
+        <Analytics />
       </body>
     </html>
   );
