@@ -37,8 +37,11 @@ export default async function AdminBookingsPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Admin • Bookings</h1>
         <div className="flex gap-4 text-sm items-center">
+          <Link className="underline" href="/admin/itineraries">
+            Itineraries
+          </Link>
           <Link className="underline" href="/itineraries">
-            Back to itineraries
+            Live site
           </Link>
           <Link className="underline" href="/">
             Home
