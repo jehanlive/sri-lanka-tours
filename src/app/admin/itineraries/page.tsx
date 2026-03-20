@@ -61,6 +61,7 @@ export default function AdminItinerariesPage() {
         <h1 className="text-2xl font-bold">Admin • Itineraries</h1>
         <div className="flex gap-4 text-sm items-center">
           <Link className="underline" href="/admin/bookings">Bookings</Link>
+          <Link className="underline" href="/admin/rates">Rates</Link>
           <Link className="underline" href="/itineraries">Live site</Link>
           <Link className="underline" href="/">Home</Link>
           <AdminLogout />

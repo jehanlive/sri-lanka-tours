@@ -40,6 +40,9 @@ export default async function AdminBookingsPage() {
           <Link className="underline" href="/admin/itineraries">
             Itineraries
           </Link>
+          <Link className="underline" href="/admin/rates">
+            Rates
+          </Link>
           <Link className="underline" href="/itineraries">
             Live site
           </Link>
